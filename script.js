@@ -78,61 +78,25 @@ if (gallery) {
 }
 
 const musicButton = document.querySelector('.music-toggle');
-let audioContext;
-let musicGain;
-let melodyTimer;
-let melodyStep = 0;
-const chords = [
-  [261.63, 329.63, 392],
-  [220, 261.63, 329.63],
-  [174.61, 220, 261.63],
-  [196, 246.94, 293.66]
-];
-
-function playSoftNote(frequency, start, duration) {
-  const oscillator = audioContext.createOscillator();
-  const noteGain = audioContext.createGain();
-  oscillator.type = 'sine';
-  oscillator.frequency.value = frequency;
-  noteGain.gain.setValueAtTime(.0001, start);
-  noteGain.gain.exponentialRampToValueAtTime(.14, start + .12);
-  noteGain.gain.exponentialRampToValueAtTime(.0001, start + duration);
-  oscillator.connect(noteGain);
-  noteGain.connect(musicGain);
-  oscillator.start(start);
-  oscillator.stop(start + duration + .04);
-}
-
-function playMelodyStep() {
-  const chord = chords[melodyStep % chords.length];
-  const now = audioContext.currentTime + .04;
-  [chord[0], chord[1], chord[2], chord[1]].forEach((frequency, index) => {
-    playSoftNote(frequency, now + index * .68, 1.45);
-  });
-  melodyStep += 1;
-}
-
-musicButton?.addEventListener('click', async () => {
-  if (melodyTimer) {
-    window.clearInterval(melodyTimer);
-    melodyTimer = undefined;
-    musicGain.gain.setTargetAtTime(.0001, audioContext.currentTime, .12);
-    musicButton.setAttribute('aria-pressed', 'false');
-    musicButton.querySelector('span:last-child').textContent = 'Escuchar una melodía';
+const musicPlayer = document.querySelector('.music-player');
+musicButton?.addEventListener('click', () => {
+  const isOpen = musicButton.getAttribute('aria-expanded') === 'true';
+  if (isOpen) {
+    musicPlayer.replaceChildren();
+    musicPlayer.hidden = true;
+    musicButton.setAttribute('aria-expanded', 'false');
+    musicButton.querySelector('span:last-child').textContent = 'Escuchar Hasta que LLEGUE YO';
     return;
   }
-  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-  if (!AudioContextClass) {
-    musicButton.querySelector('span:last-child').textContent = 'La música no está disponible aquí';
-    return;
-  }
-  audioContext ||= new AudioContextClass();
-  await audioContext.resume();
-  musicGain = audioContext.createGain();
-  musicGain.gain.value = .28;
-  musicGain.connect(audioContext.destination);
-  musicButton.setAttribute('aria-pressed', 'true');
-  musicButton.querySelector('span:last-child').textContent = 'Pausar melodía';
-  playMelodyStep();
-  melodyTimer = window.setInterval(playMelodyStep, 2900);
+  const player = document.createElement('iframe');
+  player.title = 'Paulo Londra — hasta que LLEGUE YO (video oficial)';
+  player.src = 'https://www.youtube-nocookie.com/embed/U5grMLDOEgw?autoplay=1&rel=0';
+  player.allow = 'autoplay; encrypted-media; picture-in-picture; web-share';
+  player.referrerPolicy = 'strict-origin-when-cross-origin';
+  player.loading = 'lazy';
+  player.allowFullscreen = true;
+  musicPlayer.replaceChildren(player);
+  musicPlayer.hidden = false;
+  musicButton.setAttribute('aria-expanded', 'true');
+  musicButton.querySelector('span:last-child').textContent = 'Cerrar reproductor';
 });
