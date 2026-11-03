@@ -35,3 +35,104 @@ function petals(count) {
     petal.addEventListener('animationend', () => petal.remove(), { once: true });
   }
 }
+
+const delightMessages = [
+  'Tu forma tan bonita de ser hace especiales hasta los ratitos más simples.',
+  'Me encanta cómo me haces reír cuando compartimos tiempo juntos.',
+  'Tu sonrisa tiene ese no sé qué que se me queda en la mente.',
+  'Me gusta que podamos jugar, hablar y simplemente pasar el rato.',
+  'Eres hermosa, pero lo que más me encanta es todo lo que eres.'
+];
+let delightIndex = 0;
+document.querySelector('.delight-button')?.addEventListener('click', () => {
+  delightIndex = (delightIndex + 1) % delightMessages.length;
+  const message = document.querySelector('.delight-message');
+  message.classList.add('changing');
+  window.setTimeout(() => {
+    message.textContent = delightMessages[delightIndex];
+    message.classList.remove('changing');
+  }, 170);
+  petals(5);
+});
+
+const gallery = document.querySelector('.photo-grid');
+const galleryCount = document.querySelector('.gallery-count');
+if (gallery) {
+  const photos = [...gallery.querySelectorAll('.photo-card')];
+  const updateGalleryCount = () => {
+    const firstPhoto = photos[0];
+    if (!firstPhoto) return;
+    const gap = parseFloat(getComputedStyle(gallery).columnGap || getComputedStyle(gallery).gap) || 0;
+    const step = firstPhoto.getBoundingClientRect().width + gap;
+    const current = Math.min(photos.length, Math.max(1, Math.round(gallery.scrollLeft / step) + 1));
+    galleryCount.textContent = `${current} / ${photos.length}`;
+  };
+  gallery.addEventListener('scroll', updateGalleryCount, { passive: true });
+  document.querySelector('.gallery-prev')?.addEventListener('click', () => {
+    gallery.scrollBy({ left: -gallery.clientWidth * .78, behavior: 'smooth' });
+  });
+  document.querySelector('.gallery-next')?.addEventListener('click', () => {
+    gallery.scrollBy({ left: gallery.clientWidth * .78, behavior: 'smooth' });
+  });
+  window.addEventListener('resize', updateGalleryCount);
+}
+
+const musicButton = document.querySelector('.music-toggle');
+let audioContext;
+let musicGain;
+let melodyTimer;
+let melodyStep = 0;
+const chords = [
+  [261.63, 329.63, 392],
+  [220, 261.63, 329.63],
+  [174.61, 220, 261.63],
+  [196, 246.94, 293.66]
+];
+
+function playSoftNote(frequency, start, duration) {
+  const oscillator = audioContext.createOscillator();
+  const noteGain = audioContext.createGain();
+  oscillator.type = 'sine';
+  oscillator.frequency.value = frequency;
+  noteGain.gain.setValueAtTime(.0001, start);
+  noteGain.gain.exponentialRampToValueAtTime(.14, start + .12);
+  noteGain.gain.exponentialRampToValueAtTime(.0001, start + duration);
+  oscillator.connect(noteGain);
+  noteGain.connect(musicGain);
+  oscillator.start(start);
+  oscillator.stop(start + duration + .04);
+}
+
+function playMelodyStep() {
+  const chord = chords[melodyStep % chords.length];
+  const now = audioContext.currentTime + .04;
+  [chord[0], chord[1], chord[2], chord[1]].forEach((frequency, index) => {
+    playSoftNote(frequency, now + index * .68, 1.45);
+  });
+  melodyStep += 1;
+}
+
+musicButton?.addEventListener('click', async () => {
+  if (melodyTimer) {
+    window.clearInterval(melodyTimer);
+    melodyTimer = undefined;
+    musicGain.gain.setTargetAtTime(.0001, audioContext.currentTime, .12);
+    musicButton.setAttribute('aria-pressed', 'false');
+    musicButton.querySelector('span:last-child').textContent = 'Escuchar una melodía';
+    return;
+  }
+  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+  if (!AudioContextClass) {
+    musicButton.querySelector('span:last-child').textContent = 'La música no está disponible aquí';
+    return;
+  }
+  audioContext ||= new AudioContextClass();
+  await audioContext.resume();
+  musicGain = audioContext.createGain();
+  musicGain.gain.value = .28;
+  musicGain.connect(audioContext.destination);
+  musicButton.setAttribute('aria-pressed', 'true');
+  musicButton.querySelector('span:last-child').textContent = 'Pausar melodía';
+  playMelodyStep();
+  melodyTimer = window.setInterval(playMelodyStep, 2900);
+});

@@ -2,7 +2,7 @@
 
 Una carta web romántica, hecha con HTML, CSS y JavaScript. No necesita instalar dependencias: abre `index.html` en tu navegador.
 
-La página incluye una galería local en `assets/recuerdos/` con seis fotos optimizadas para web.
+La página incluye una galería local en `assets/recuerdos/` con seis fotos optimizadas para web, una línea de tiempo de recuerdos, un carrusel de fotos, mensajes interactivos y una melodía suave que solo se reproduce cuando la visitante la activa.
 
 ## Personalizar
 
