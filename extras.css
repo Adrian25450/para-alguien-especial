@@ -70,3 +70,5 @@ html{scroll-behavior:smooth;scroll-padding-top:78px}.heart-sky{position:fixed;in
   .memory-photo{width:52px;height:58px}
   .photo-grid{gap:10px 8px}
 }
+.love-note{margin:20px 0 0;padding:13px 19px;border:1px solid #f0d5da;border-radius:999px;background:#fff8f5;color:#9b6570;font:italic 15px/1.5 'Playfair Display',serif;box-shadow:0 6px 20px #a2566010}.love-note span{font-style:normal}
+@media(max-width:600px){.love-note{font-size:13px;padding:11px 14px;margin-top:16px}}
