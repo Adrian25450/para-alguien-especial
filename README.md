@@ -2,7 +2,7 @@
 
 Una carta web romántica, hecha con HTML, CSS y JavaScript. No necesita instalar dependencias: abre `index.html` en tu navegador.
 
-La página incluye una galería local en `assets/recuerdos/` con seis fotos optimizadas para web, una línea de tiempo de recuerdos, un carrusel de fotos, mensajes interactivos sobre los momentos favoritos y el video oficial de «hasta que LLEGUE YO», que solo se carga cuando la visitante lo activa.
+La página incluye un jardín animado de rosas rojas en SVG, una galería local en `assets/recuerdos/` con seis fotos optimizadas para web, una línea de tiempo de recuerdos, un carrusel de fotos, mensajes interactivos sobre los momentos favoritos y el video oficial de «hasta que LLEGUE YO», que solo se carga cuando la visitante lo activa.
 
 ## Personalizar
 
