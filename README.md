@@ -8,7 +8,10 @@ Una carta web romántica, hecha con HTML, CSS y JavaScript. No necesita instalar
 - Cambia el título y la firma si quieres hacerla más personal.
 - Los estilos de las secciones y el fondo animado están en `extras.css`; las flores y la carta se personalizan en `style.css` y `script.js`.
 
-## Privacidad en GitHub
+## Publicación
 
-Para guardar el proyecto en GitHub sin que otros vean el código, crea un repositorio **Private** al subirlo. Si publicas el sitio con GitHub Pages, revisa quién puede acceder: según tu plan y la configuración, Pages puede quedar público aunque el repositorio sea privado. La página no contiene protección con contraseña; no compartas información sensible y envíala solo a la persona para quien la hiciste.
+- Sitio: https://adrian25450.github.io/para-alguien-especial/
+- Repositorio: https://github.com/Adrian25450/para-alguien-especial
+
+El repositorio y la página están públicos: cualquiera puede abrir el sitio y consultar o copiar el código. No contiene protección con contraseña.
 
